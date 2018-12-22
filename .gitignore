@@ -1,0 +1,55 @@
+# Object files
+*.o
+*.ko
+
+# Libraries *.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.Po
+
+src/.*
+*.pc
+
+# automake
+/autom4te.cache
+/aclocal.m4
+*.log
+
+# tests
+*.trs
+
+# cmake
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+*.cmake
+build/*
+!build/.gitkeep
+lib/
+
+# vs code
+.vscode/
+
+target/*
+!target/.gitkeep
+.clang
+.clang_complete
+.tags
+*.gch
+.DS_Store
+Doxyfile.bak
+Doxyfile
