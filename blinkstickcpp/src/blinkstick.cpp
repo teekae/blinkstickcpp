@@ -9,8 +9,8 @@
 namespace
 {
 
-    static int const VENDOR_ID = 8352;    //"0X20A0";
-    static int const PRODUCT_ID = 16869;  //"0X41E5";
+    constexpr int VENDOR_ID = 0X20A0;
+    constexpr int PRODUCT_ID = 0X41E5;
 
     bool print_debug = false;
 
@@ -19,12 +19,12 @@ namespace
         return std::shared_ptr<hid_device>(
             hid_open_path(device_info->path),
             [](hid_device* device)
-        {
-            if (device)
-            {
-                hid_close(device);
-            }
-        });
+			{
+				if (device)
+				{
+					hid_close(device);
+				}
+			});
     }
 }
 
@@ -64,7 +64,7 @@ namespace blinkstick
         return 0;
     }
 
-    enum device_type get_type(hid_device_info* device_info)
+    device_type get_type(hid_device_info* device_info)
     {
         const auto major_version = get_major_version(device_info);
 
