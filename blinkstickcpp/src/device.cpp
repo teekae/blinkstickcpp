@@ -9,17 +9,7 @@ namespace
     constexpr int MODE_MSG_SIZE = 2;
     constexpr int COUNT_MSG_SIZE = 2;
 
-    constexpr std::array<uint8_t, 3> rgb_to_char(uint8_t red, uint8_t green, uint8_t blue)
-    {
-        return
-        {
-            uint8_t(red & 0xff),
-            uint8_t(green & 0xff),
-            uint8_t(blue & 0xff)
-        };
-    }
-
-    std::vector<uint8_t> build_control_message(const uint8_t index, const uint8_t channel, const std::array<uint8_t, 3>& color)
+    std::vector<uint8_t> build_control_message(const uint8_t index, const uint8_t channel, uint8_t red, uint8_t green, uint8_t blue)
     {
         // Write to the first LED present
         // this will be the _only_ led for the original blinkstick
@@ -28,9 +18,9 @@ namespace
             return
             {
                 0x1,
-                color[0],
-                color[1],
-                color[2]
+                red,
+                green,
+                blue
             };
         }
 
@@ -42,9 +32,9 @@ namespace
             0x5,
             channel,
             index,
-            color[0],
-            color[1],
-            color[2]
+			red,
+			green,
+			blue
         };
     }
 
@@ -59,7 +49,7 @@ namespace
 
     constexpr std::array<uint8_t, COUNT_MSG_SIZE> build_count_message(const uint8_t count)
     {
-        return std::array<uint8_t, COUNT_MSG_SIZE>
+        return
         {
             0x81,
             count
@@ -101,15 +91,15 @@ namespace
     }
 
     template<typename T>
-    int get_feature_report(const std::shared_ptr<hid_device>& handle, T& msg)
+    bool get_feature_report(const std::shared_ptr<hid_device>& handle, T& msg)
     {
-        return hid_get_feature_report(handle.get(), msg.data(), msg.size());
+        return hid_get_feature_report(handle.get(), msg.data(), msg.size()) != -1;
     }
 
     template<typename T>
-    int send_feature_report(const std::shared_ptr<hid_device>& handle, const T& msg)
+    bool send_feature_report(const std::shared_ptr<hid_device>& handle, const T& msg)
     {
-        return hid_send_feature_report(handle.get(), msg.data(), msg.size());
+        return hid_send_feature_report(handle.get(), msg.data(), msg.size()) != -1;
     }
 }
 
@@ -125,14 +115,15 @@ namespace blinkstick
 
     bool device::set_mode(const mode mode) const
     {
-        auto msg = build_mode_message(mode);
         if (handle == nullptr)
         {
             debug("input hid handle is null");
             return false;
         }
-        const int result = send_feature_report(handle, msg);
-        if (result == -1)
+
+		const auto msg = build_mode_message(mode);
+
+        if (!send_feature_report(handle, msg))
         {
             debug("error writing mode to device");
             return false;
@@ -143,7 +134,7 @@ namespace blinkstick
     mode device::get_mode() const
     {
         auto data = build_mode_message(mode::unknown);
-        if (send_feature_report(handle, data) == -1)
+        if (!send_feature_report(handle, data))
         {
             debug("error reading mode from device");
             return mode::unknown;
@@ -156,18 +147,17 @@ namespace blinkstick
     bool device::set_colour(
         const int channel,
         const int index,
-        const int red,
-        const int green,
-        const int blue) const
+        const uint8_t red,
+        const uint8_t green,
+        const uint8_t blue) const
     {
         if (handle == nullptr)
         {
             debug("input hid handle is null");
             return false;
         }
-        const auto color = rgb_to_char(red, green, blue);
-        const auto msg = build_control_message(index, channel, color);
-        if (send_feature_report(handle, msg) == -1)
+        const auto msg = build_control_message(index, channel, red, green, blue);
+        if (!send_feature_report(handle, msg))
         {
             debug("error writing colour to device");
             return false;
@@ -177,9 +167,9 @@ namespace blinkstick
 
     bool device::set_colours(
         const int channel,
-        const int red,
-        const int green,
-        const int blue) const
+        const uint8_t red,
+        const uint8_t green,
+        const uint8_t blue) const
     {
         std::vector<colour> colours;
         const auto total_leds = get_led_count();
@@ -206,9 +196,9 @@ namespace blinkstick
             return false;
         }
 
-        const auto[report_id, max_leds] = determine_report_id(get_led_count() * 3);
+        const auto [report_id, max_leds] = determine_report_id(get_led_count() * 3);
 
-        std::vector<uint8_t> msg(max_leds * 3 + 2);
+        std::vector<uint8_t> msg(static_cast<size_t>(max_leds) * 3 + 2);
 
         msg[0] = report_id;
         msg[1] = channel;
@@ -225,7 +215,7 @@ namespace blinkstick
             msg[index++] = colour.blue;
         }
 
-        if (send_feature_report(handle, msg) == -1)
+        if (!send_feature_report(handle, msg))
         {
             debug("error writing colour to device");
             return false;
@@ -245,7 +235,7 @@ namespace blinkstick
             std::array<uint8_t, 33> data;
             data[0] = 0x0001;
 
-            if (get_feature_report(handle, data) == -1)
+            if (!get_feature_report(handle, data))
             {
                 debug("unable to read colour from blinkstick");
             }
@@ -261,18 +251,18 @@ namespace blinkstick
             const int count = (index + 1) * 3;
             const auto[report_id, max_leds] = determine_report_id(count);
 
-            std::vector<uint8_t> data(max_leds * 3 + 2);
+            std::vector<uint8_t> data(static_cast<size_t>(max_leds) * 3 + 2);
             data[0] = report_id;
 
-            if (get_feature_report(handle, data) == -1)
+            if (!get_feature_report(handle, data))
             {
                 debug("unable to read colour from blinkstick");
             }
             else
             {
-                color.red = data[index * 3 + 3];
-                color.green = data[index * 3 + 2];
-                color.blue = data[index * 3 + 4];
+                color.red = data[static_cast<size_t>(index) * 3 + 3];
+                color.green = data[static_cast<size_t>(index) * 3 + 2];
+                color.blue = data[static_cast<size_t>(index) * 3 + 4];
             }
         }
         return color;
@@ -297,8 +287,8 @@ namespace blinkstick
         }
         // Build a message with the default value of 0
         auto data = build_count_message(0);
-        const int result = get_feature_report(handle, data);
-        if (result == -1)
+        
+        if (!get_feature_report(handle, data))
         {
             debug("error reading mode from device");
         }
@@ -318,8 +308,7 @@ namespace blinkstick
 
         const auto msg = build_count_message(count);
 
-        const int result = send_feature_report(handle, msg);
-        if (result == -1)
+        if (!send_feature_report(handle, msg))
         {
             debug("error writing led count to device");
             return false;

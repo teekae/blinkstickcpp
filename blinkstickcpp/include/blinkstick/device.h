@@ -61,15 +61,15 @@ namespace blinkstick
         bool set_colour(
             int channel,
             int index,
-            int red,
-            int green,
-            int blue) const;
+            uint8_t red,
+            uint8_t green,
+            uint8_t blue) const;
 
         bool set_colours(
             int channel,
-            int red,
-            int green,
-            int blue) const;
+            uint8_t red,
+            uint8_t green,
+            uint8_t blue) const;
 
         bool set_colours(
             int channel,
