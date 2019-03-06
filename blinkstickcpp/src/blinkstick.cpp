@@ -114,8 +114,15 @@ namespace blinkstick
 
         do
         {
-            debug("found device: %s", device_info->path);
-            devices.emplace_back(get_device(device_info), get_type(device_info));
+            if(auto device = get_device(device_info); !device)
+            {
+                debug("could not open device");
+            }
+            else
+            {            
+                debug("found device: %s", device_info->path);
+                devices.emplace_back(std::move(device), get_type(device_info));
+            }
         } while ((device_info = device_info->next));
 
         hid_free_enumeration(all_devices);
