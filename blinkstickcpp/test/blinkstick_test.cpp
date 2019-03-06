@@ -1,6 +1,8 @@
 
 #include <blinkstick/blinkstick.h>
 
+#include <algorithm>
+#include <cstring>
 #include <iostream>
 #include <atomic>
 #include <string>
