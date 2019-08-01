@@ -1,6 +1,6 @@
 #pragma once
 
-#include <blinkstick/device.h>
+#include <blinkstick/device.hpp>
 #include <cstdint>
 #include <vector>
 

@@ -1,4 +1,4 @@
-#include "blinkstick/blinkstick.h"
+#include "blinkstick/blinkstick.hpp"
 
 #include <hidapi/hidapi.h>
 
@@ -119,7 +119,7 @@ namespace blinkstick
                 debug("could not open device");
             }
             else
-            {            
+            {
                 debug("found device: %s", device_info->path);
                 devices.emplace_back(std::move(device), get_type(device_info));
             }

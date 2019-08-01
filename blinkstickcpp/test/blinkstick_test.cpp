@@ -1,5 +1,5 @@
 
-#include <blinkstick/blinkstick.h>
+#include <blinkstick/blinkstick.hpp>
 
 #include <algorithm>
 #include <cstring>

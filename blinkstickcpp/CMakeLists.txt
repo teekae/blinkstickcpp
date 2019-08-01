@@ -24,7 +24,7 @@ install(TARGETS blinkstickcpp EXPORT blinkstickcppTargets
         ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
         LIBRARY DESTINATION "${INSTALL_LIB_DIR}")
 
-install(FILES blinkstick.h device.h DESTINATION "${INSTALL_INC_DIR}")
+install(FILES blinkstick.hpp device.hpp DESTINATION "${INSTALL_INC_DIR}")
 
 include(CMakePackageConfigHelpers)
 

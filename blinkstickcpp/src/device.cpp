@@ -1,4 +1,4 @@
-#include "blinkstick/device.h"
+#include "blinkstick/device.hpp"
 
 #include <hidapi/hidapi.h>
 
@@ -287,7 +287,7 @@ namespace blinkstick
         }
         // Build a message with the default value of 0
         auto data = build_count_message(0);
-        
+
         if (!get_feature_report(handle, data))
         {
             debug("error reading mode from device");
