@@ -1,5 +1,6 @@
 #pragma once
 
+#include <blinkstickcpp_export.h>
 #include <cstdint>
 #include <memory>
 #include <optional>
@@ -43,7 +44,7 @@ namespace blinkstick
         uint8_t blue = 0;
     };
 
-    class device
+    class BLINKSTICKCPP_EXPORT device
     {
     public:
         device(
