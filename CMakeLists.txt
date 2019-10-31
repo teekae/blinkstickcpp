@@ -23,7 +23,7 @@ configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/blinkstickcpp.pc.in
 install(FILES ${CMAKE_BINARY_DIR}/blinkstickcpp.pc DESTINATION "${INSTALL_PKGCONFIG_DIR}")
 
 set(blinkstickcpp_VERSION_MAJOR 0)
-set(blinkstickcpp_VERSION_MINOR 1)
+set(blinkstickcpp_VERSION_MINOR 2)
 set(blinkstickcpp_VERSION_PATCH 0)
 
 set(blinkstickcpp_VERSION "${blinkstickcpp_VERSION_MAJOR}.${blinkstickcpp_VERSION_MINOR}.${blinkstickcpp_VERSION_PATCH}")
