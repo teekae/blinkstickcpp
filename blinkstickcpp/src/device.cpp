@@ -281,6 +281,23 @@ namespace blinkstick
 
     int device::get_led_count() const
     {
+        switch (type)
+        {
+        case device_type::basic:
+            return 1;
+        case device_type::pro:
+            break;
+        case device_type::square:
+        case device_type::strip:
+            return 8;
+        case device_type::nano:
+            return 2;
+        case device_type::flex:
+            break;
+        default:
+            break;
+        };
+
         if (led_count)
         {
             return *led_count;
