@@ -1,6 +1,6 @@
 #pragma once
 
-#include <blinkstickcpp_export.h>
+#include <blinkstick/export.hpp>
 #include <cstdint>
 #include <memory>
 #include <optional>

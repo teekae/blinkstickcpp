@@ -5,7 +5,7 @@ add_library(blinkstickcpp
 )
 
 include(GenerateExportHeader)
-generate_export_header(blinkstickcpp)
+generate_export_header(blinkstickcpp EXPORT_FILE_NAME blinkstick/export.hpp)
 
 target_include_directories(blinkstickcpp
         PUBLIC
@@ -31,7 +31,7 @@ install(TARGETS blinkstickcpp EXPORT blinkstickcppTargets
 install(FILES 
             blinkstick.hpp
             device.hpp
-            ${PROJECT_BINARY_DIR}/blinkstickcpp_export.h 
+            ${PROJECT_BINARY_DIR}/blinkstick/export.hpp
         DESTINATION 
             "${INSTALL_INC_DIR}")
 

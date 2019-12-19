@@ -1,7 +1,7 @@
 #pragma once
 
 #include <blinkstick/device.hpp>
-#include <blinkstickcpp_export.h>
+#include <blinkstick/export.hpp>
 #include <cstdint>
 #include <vector>
 
