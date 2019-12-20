@@ -4,9 +4,13 @@ add_library(blinkstickcpp
     src/device.cpp
 )
 
+include(GenerateExportHeader)
+generate_export_header(blinkstickcpp EXPORT_FILE_NAME blinkstick/export.hpp)
+
 target_include_directories(blinkstickcpp
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
             $<INSTALL_INTERFACE:include>
         PRIVATE
             ${HIDAPI_INCLUDE_DIR})
@@ -24,7 +28,12 @@ install(TARGETS blinkstickcpp EXPORT blinkstickcppTargets
         ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
         LIBRARY DESTINATION "${INSTALL_LIB_DIR}")
 
-install(FILES blinkstick.hpp device.hpp DESTINATION "${INSTALL_INC_DIR}")
+install(FILES 
+            blinkstick.hpp
+            device.hpp
+            ${PROJECT_BINARY_DIR}/blinkstick/export.hpp
+        DESTINATION 
+            "${INSTALL_INC_DIR}")
 
 include(CMakePackageConfigHelpers)
 

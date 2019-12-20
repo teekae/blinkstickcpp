@@ -1,6 +1,7 @@
 #pragma once
 
 #include <blinkstick/device.hpp>
+#include <blinkstick/export.hpp>
 #include <cstdint>
 #include <vector>
 
@@ -11,22 +12,22 @@ namespace blinkstick
      * @brief Finds all BlinkStick devices
      * @return an vector of BlinkStick devices
      */
-    std::vector<device> find_all();
+    std::vector<device> BLINKSTICKCPP_EXPORT find_all();
 
     /**
      * @brief Find the first blinkstick device on the bus registered
      * with HID.
      * @return a BlinkStick device.
      */
-    device find();
+    device BLINKSTICKCPP_EXPORT find();
 
     /**
     * @brief Function to be called when all devices are no longer being used
     */
-    void finalise();
+    void BLINKSTICKCPP_EXPORT finalise();
 
     /**
      * @brief Turns on debug logging.
      */
-    void enable_logging();
+    void BLINKSTICKCPP_EXPORT enable_logging();
 }
