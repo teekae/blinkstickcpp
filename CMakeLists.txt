@@ -24,7 +24,7 @@ install(FILES ${CMAKE_BINARY_DIR}/blinkstickcpp.pc DESTINATION "${INSTALL_PKGCON
 
 set(blinkstickcpp_VERSION_MAJOR 0)
 set(blinkstickcpp_VERSION_MINOR 2)
-set(blinkstickcpp_VERSION_PATCH 0)
+set(blinkstickcpp_VERSION_PATCH 1)
 
 set(blinkstickcpp_VERSION "${blinkstickcpp_VERSION_MAJOR}.${blinkstickcpp_VERSION_MINOR}.${blinkstickcpp_VERSION_PATCH}")
 add_subdirectory(blinkstickcpp)

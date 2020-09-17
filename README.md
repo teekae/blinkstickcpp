@@ -1,4 +1,4 @@
-BlinkStickCpp v0.2.0
+BlinkStickCpp v0.2.1
 =============
 
 A [blinkstick](http://www.blinkstick.com/) library written in c++
