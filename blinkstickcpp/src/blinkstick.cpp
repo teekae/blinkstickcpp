@@ -19,12 +19,12 @@ namespace
         return std::shared_ptr<hid_device>(
             hid_open_path(device_info->path),
             [](hid_device* device)
-			{
-				if (device)
-				{
-					hid_close(device);
-				}
-			});
+            {
+                if (device)
+                {
+                    hid_close(device);
+                }
+            });
     }
 }
 
@@ -52,11 +52,11 @@ namespace blinkstick
 
     int get_major_version(hid_device_info* device_info)
     {
-		if(device_info->serial_number == nullptr)
-		{
-			debug("No serial number");
-			return 0;
-		}
+        if(device_info->serial_number == nullptr)
+        {
+            debug("No serial number");
+            return 0;
+        }
         const std::wstring serial = device_info->serial_number;
         try
         {
@@ -64,7 +64,7 @@ namespace blinkstick
         }
         catch (const std::exception&)
         {
-			debug("Failed to parse serial number");
+            debug("Failed to parse serial number");
         }
         return 0;
     }
